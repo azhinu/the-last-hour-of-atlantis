@@ -71,7 +71,7 @@ func main (){
 		switch result {
 			case "Отправиться в порт.":
 				portLoc()
-			case "Отправиться на городскую площадь.":
+			case "Отправиться к городской площади.":
 				squareLoc()
 			case "Отправиться в гильдию художников.":
 				artistsLoc()
@@ -244,9 +244,7 @@ func portLoc() {
 	status.portVisited = true
 	resetLoc()
 	in.port = true
-
 }
-
 func squareLoc() {
 	updateMessage("Придя на центральную площадь города, вы встали на постамент и началить\nкричать, что есть мочи о надвигающейся опасности и короблях,\nчто стоят в порту. Народ повергла паника. Люди бегут к короблям, словно\nстадо испуганых овец. В порту началась бойня. Люди захватывают корабли,\nно их отбивают другие. Моряки перебиты. Надежды больше нет...")
 	reset()
@@ -330,6 +328,8 @@ func homeLoc() {
 	}
 	if status.familySaved {
 		updateMessage("Ваша семья уже на борту, вы зря потрали время.")
+		in.home = true
+		return
 	}
 	if status.homeVisited {
 		updateMessage("Ваша жена уже всё решила. Вам не переубедить её. Вы зря теряете время.")
@@ -365,13 +365,14 @@ func homeLoc() {
 		}
 	}
 	nextMessage()
-	if rand.Intn(3) == 0 {
+	if rand.Intn(2) == 1 {
 		updateMessage("Ваша жена понимает, что они будет лишь обузой для остальных, а неизвестная\nболезнь дочери может распространиться на остальных. Они решают остаться.")
 	} else {
 		updateMessage("Ваша семья собирает вещи и отправляется на корабль.")
 		status.familySaved = true
 	}
 	status.homeVisited = true
+	in.home = true
 }
 func endGame() {
 	if !status.portVisited {
@@ -434,7 +435,7 @@ func endGame() {
 // Game timer
 func endOfLife() {
 	if status.time > 66 {
-		updateMessage("Тучи сгущаются... Небеса разверзлись громом. Вот оно - начало конца.\nКорабли отчаливают. Вам не спастись.")
+		updateMessage("Тучи сгущаются... Небеса разверзлись громом. Вот оно - начало конца.\nУ вас не хватило времени. Корабли отчаливают. Вам не спастись.")
 		nextMessage()
 		// Count saved people
 		savedPeople := 0
